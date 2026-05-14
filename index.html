@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JangKeun Kim, Ph.D. — Calibrated permissioning for biological AI safeguards</title>
+<meta name="description" content="Calibrated permissioning frontier of biological AI safeguards. Mason Lab @ Weill Cornell Medicine. 60+ peer-reviewed publications, 16 Nature Portfolio Group, 5 astronaut missions, 6 anchor safeguards repositories." />
+<meta property="og:title" content="JangKeun Kim — Calibrated permissioning for biological AI safeguards" />
+<meta property="og:description" content="Mason Lab @ Weill Cornell Medicine · 6 anchor biosafety repos · live HF Space demo · 60+ pubs" />
+<meta property="og:type" content="profile" />
+<meta property="og:url" content="https://jang1563.github.io" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧬%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #131722;
+    --panel-2: #1b2030;
+    --text: #e6e9f0;
+    --text-dim: #9aa3b8;
+    --accent: #7c5cff;
+    --accent-2: #4cc9f0;
+    --good: #4ade80;
+    --warn: #f59e0b;
+    --danger: #f87171;
+    --border: #252a3a;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #fafaf7;
+      --panel: #ffffff;
+      --panel-2: #f3f3ee;
+      --text: #1a1a1a;
+      --text-dim: #555c6e;
+      --accent: #5b21b6;
+      --accent-2: #0e7490;
+      --border: #e5e5e0;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.55; font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; font-size: 0.9em; background: var(--panel-2); padding: 0.1em 0.4em; border-radius: 4px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(11, 14, 20, 0.85); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  @media (prefers-color-scheme: light) { nav.top { background: rgba(250, 250, 247, 0.9); } }
+  nav.top .nav-inner {
+    display: flex; gap: 24px; align-items: center;
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    flex-wrap: wrap;
+  }
+  nav.top .brand { font-weight: 600; font-size: 0.95em; }
+  nav.top a { color: var(--text-dim); font-size: 0.92em; }
+  nav.top a:hover { color: var(--accent-2); text-decoration: none; }
+  header.hero {
+    padding: 64px 0 48px;
+    background: radial-gradient(ellipse at top, rgba(124, 92, 255, 0.12), transparent 60%);
+  }
+  header.hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+  header.hero .subtitle { font-size: clamp(1rem, 2.4vw, 1.25rem); color: var(--text-dim); margin-bottom: 24px; }
+  header.hero .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  header.hero .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--panel); border: 1px solid var(--border);
+    font-size: 0.88em; color: var(--text);
+  }
+  header.hero .badge:hover { border-color: var(--accent); text-decoration: none; }
+  header.hero .badge svg { width: 14px; height: 14px; }
+  header.hero p.thesis { max-width: 780px; font-size: 1.05em; color: var(--text); }
+  header.hero p.thesis strong { color: var(--accent); }
+  section { padding: 48px 0; border-top: 1px solid var(--border); }
+  section h2 { font-size: 1.65rem; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
+  section .section-sub { color: var(--text-dim); margin-bottom: 32px; max-width: 720px; }
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .stat {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 16px 18px; border-radius: 12px;
+  }
+  .stat .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: 0.85em; color: var(--text-dim); margin-top: 2px; }
+  .calibration-callout {
+    background: var(--panel); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px; border-radius: 12px; margin-top: 24px;
+  }
+  .calibration-callout .label {
+    font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); font-weight: 600; margin-bottom: 8px;
+  }
+  .calibration-chart { margin-top: 24px; padding: 0 8px; }
+  .bar-row { display: grid; grid-template-columns: 220px 1fr 80px; gap: 12px; align-items: center; padding: 6px 0; font-size: 0.92em; }
+  .bar-track { background: var(--panel-2); height: 18px; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; transition: width 0.4s ease; }
+  .bar-fill.zero { background: var(--good); }
+  .bar-fill.med { background: var(--warn); }
+  .bar-fill.high { background: var(--danger); }
+  .bar-row .model { color: var(--text); font-family: "SF Mono", monospace; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .val { color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
+  .anchor-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .anchor-card {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 22px 24px; border-radius: 12px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .anchor-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .anchor-card .name {
+    font-family: "SF Mono", monospace; font-size: 1em; font-weight: 600;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .anchor-card .pitch { color: var(--text-dim); font-size: 0.92em; margin-bottom: 12px; }
+  .anchor-card .finding {
+    color: var(--text); font-size: 0.92em; padding: 8px 12px;
+    background: var(--panel-2); border-radius: 6px; margin-bottom: 12px;
+  }
+  .anchor-card .links { display: flex; gap: 12px; font-size: 0.85em; flex-wrap: wrap; }
+  .anchor-card .links a { color: var(--accent-2); }
+  .infra-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .infra-item {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 16px 18px; border-radius: 8px;
+  }
+  .infra-item .name { font-family: "SF Mono", monospace; font-size: 0.95em; font-weight: 600; margin-bottom: 4px; }
+  .infra-item .desc { color: var(--text-dim); font-size: 0.88em; }
+  .award-list { list-style: none; padding: 0; }
+  .award-list li {
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: baseline;
+  }
+  .award-list li:last-child { border-bottom: none; }
+  .award-list .when { color: var(--text-dim); font-size: 0.88em; }
+  .award-list .what { color: var(--text); }
+  .pubs-callout { background: var(--panel); border: 1px solid var(--border); padding: 20px 24px; border-radius: 12px; margin-top: 16px; }
+  footer {
+    padding: 48px 0 64px; border-top: 1px solid var(--border);
+    color: var(--text-dim); font-size: 0.9em; text-align: center;
+  }
+  .reviewer-route {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 24px 28px; border-radius: 12px; margin-top: 16px;
+    counter-reset: step;
+  }
+  .reviewer-route ol { list-style: none; padding: 0; }
+  .reviewer-route li {
+    padding: 12px 0; padding-left: 44px; position: relative;
+    border-bottom: 1px dashed var(--border);
+  }
+  .reviewer-route li:last-child { border-bottom: none; }
+  .reviewer-route li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute; left: 0; top: 12px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.85em;
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-inner">
+    <span class="brand">JangKeun Kim, Ph.D.</span>
+    <a href="#calibration">Calibration gap</a>
+    <a href="#anchors">Anchor portfolio</a>
+    <a href="#infrastructure">Eval infra</a>
+    <a href="#spaceflight">Spaceflight</a>
+    <a href="#awards">Awards</a>
+    <a href="#service">Service</a>
+    <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">Live demo →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>JangKeun Kim, Ph.D.</h1>
+    <p class="subtitle">Calibrated permissioning for biological AI safeguards · Director of Spaceflight Research, Mason Lab @ Weill Cornell Medicine</p>
+    <div class="badges">
+      <a class="badge" href="https://scholar.google.com/citations?user=07hptXkAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+      <a class="badge" href="https://orcid.org/0000-0002-8733-9925" target="_blank" rel="noopener">ORCID</a>
+      <a class="badge" href="https://github.com/jang1563" target="_blank" rel="noopener">GitHub</a>
+      <a class="badge" href="https://huggingface.co/jang1563" target="_blank" rel="noopener">🤗 HuggingFace</a>
+      <a class="badge" href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">🤗 Live Demo</a>
+      <a class="badge" href="https://www.linkedin.com/in/jangkeun-kim-16a74b19b/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="badge" href="mailto:jak4013@med.cornell.edu">Email</a>
+    </div>
+    <p class="thesis">
+      I work on the <strong>calibrated permissioning frontier of biological AI safeguards</strong>: jointly minimizing false negatives (harmful assistance) and false positives (blocked legitimate research). My empirical finding (April 2026) is that no measured frontier model sits in the low-FPR / low-FNR region for biology-specific distributions. The portfolio below is built to close that gap.
+    </p>
+  </div>
+</header>
+
+<section id="route">
+  <div class="container">
+    <h2>Reviewer route in 15 minutes</h2>
+    <p class="section-sub">If this is your first visit and you have only 15 minutes, this is the order I would suggest.</p>
+    <div class="reviewer-route">
+      <ol>
+        <li><strong>(2 min)</strong> Open the <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">bio-overrefusal-explorer Space</a> — browse the 201-query benchmark and 9-model FPR with Wilson 95% CIs. No model API calls happen at runtime; the data is pre-computed.</li>
+        <li><strong>(5 min)</strong> Read <a href="https://github.com/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">bio-overrefusal-v0.1</a> README + <a href="https://github.com/jang1563/bio-overrefusal-v0.1/blob/main/SAFETY.md" target="_blank" rel="noopener">SAFETY.md</a>. The "How This Maps to AI Safety Practice" section orients you to the broader stack.</li>
+        <li><strong>(5 min)</strong> Read <a href="https://github.com/jang1563/constitutional-bioguard" target="_blank" rel="noopener">constitutional-bioguard</a> README. Same pattern: thesis, status, AI-safety mapping, SAFETY.md.</li>
+        <li><strong>(3 min)</strong> Skim <a href="https://github.com/jang1563/ambiguity-casebook" target="_blank" rel="noopener">ambiguity-casebook</a> — 36 NSABB-anchored boundary cases under a 12-field template.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="calibration">
+  <div class="container">
+    <h2>Empirical calibration gap (April 2026)</h2>
+    <p class="section-sub">Strict false-positive refusal rate (FPR) on 181 legitimate biology research queries (Tiers 1–4). Every refusal here is on a query a credentialed biology researcher would consider appropriate to answer.</p>
+
+    <div class="calibration-callout">
+      <div class="label">Headline finding</div>
+      <p>Anthropic Sonnet 4.5/4.6 refused <strong>33.7%</strong> of legitimate queries; Opus 4.7 refused <strong>43.6%</strong>; the other 6 frontier models tested refused 0–0.5%. All Anthropic refusals were hard API-level stops (<code>stop_reason="refusal"</code>, empty response). McNemar p&lt;0.0001; exact binomial test vs published 0.05% baseline p&lt;0.0001.</p>
+    </div>
+
+    <div class="calibration-chart" aria-label="Per-model FPR with Wilson 95% CIs">
+      <div class="bar-row">
+        <span class="model">claude-haiku-4-5</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">deepseek-chat</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">gemini-2.5-flash</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">gpt-4o-mini</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">gpt-4o</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">llama-3.3-70b</span>
+        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
+        <span class="val">0.0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">claude-sonnet-4-5</span>
+        <div class="bar-track"><div class="bar-fill high" style="width:33.7%"></div></div>
+        <span class="val">33.7%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">claude-sonnet-4-6</span>
+        <div class="bar-track"><div class="bar-fill high" style="width:33.7%"></div></div>
+        <span class="val">33.7%</span>
+      </div>
+      <div class="bar-row">
+        <span class="model">claude-opus-4-7</span>
+        <div class="bar-track"><div class="bar-fill high" style="width:43.6%"></div></div>
+        <span class="val">43.6%</span>
+      </div>
+    </div>
+    <p style="color: var(--text-dim); font-size: 0.85em; margin-top: 16px;">Numbers should be read as a slice-level calibration signal for this specific biology-research benchmark, not as a global model-quality ranking or a claim about any provider's full safety system. Reproducible from a fresh clone via the linked repository (~5 min smoke test, ~$0.06–$15.82 per full eval depending on model). <a href="https://github.com/jang1563/bio-overrefusal-v0.1#headline-finding" target="_blank" rel="noopener">See full report →</a></p>
+  </div>
+</section>
+
+<section id="anchors">
+  <div class="container">
+    <h2>Anchor portfolio (6 repositories)</h2>
+    <p class="section-sub">Each anchor repo has the same five-section <code>SAFETY.md</code> (in/out scope, withheld content, reporting, limitations) and a "How This Maps to AI Safety Practice" section that links across the 5 other anchors.</p>
+
+    <div class="anchor-grid">
+
+      <div class="anchor-card">
+        <div class="name">bio-overrefusal-v0.1</div>
+        <div class="pitch">Calibration anchor — 201 expert-annotated biology queries × 9 frontier models, false-positive refusal rate (FPR) with Wilson 95% CIs.</div>
+        <div class="finding">Sonnet 4.5/4.6: 33.7% FPR · Opus 4.7: 43.6% · Other 6 models: ≤0.5%</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/datasets/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">HF dataset</a>
+          <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">Live Space</a>
+        </div>
+      </div>
+
+      <div class="anchor-card">
+        <div class="name">constitutional-bioguard</div>
+        <div class="pitch">Classifier anchor — DeBERTa-v3-base fine-tuned on a 56-rule biosafety constitution × 7 NSABB categories. Domain-extension prototype.</div>
+        <div class="finding">Held-out F1 = 0.980 · AUROC = 0.998 · 0/325 over-refusal FPR · 9.79% mean adversarial ASR</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/constitutional-bioguard" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/jang1563/constitutional-bioguard-deberta-v1" target="_blank" rel="noopener">HF model</a>
+        </div>
+      </div>
+
+      <div class="anchor-card">
+        <div class="name">ambiguity-casebook</div>
+        <div class="pitch">Boundary case anchor — 36 dual-use cases × 6 categories (NSABB / FSAP / BWC / CWC anchored) under a 12-field structured template.</div>
+        <div class="finding">30/36 cases trigger API-level refusals before model reasoning engages</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/ambiguity-casebook" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/datasets/jang1563/ambiguity-casebook" target="_blank" rel="noopener">HF dataset</a>
+        </div>
+      </div>
+
+      <div class="anchor-card">
+        <div class="name">bio-constitution-rules</div>
+        <div class="pitch">Rule + label anchor — 30 machine-readable rules × 6 bio domains, with end-to-end training pipeline and 1,063-record synthetic corpus.</div>
+        <div class="finding">100% [91.6%, 100%] on a 42-query pilot · +47.6 pp vs generic CBRN baseline · v0.2 stratified eval pending</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/bio-constitution-rules" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/datasets/jang1563/bio-constitution-rules" target="_blank" rel="noopener">HF dataset</a>
+        </div>
+      </div>
+
+      <div class="anchor-card">
+        <div class="name">narrow-model-safety-eval</div>
+        <div class="pitch">Narrow-model dual-use anchor — FSPE / FSI metrics + Physical Realizability Tier system applied to ESM-2, ProteinMPNN, EvoDiff, LigandMPNN.</div>
+        <div class="finding">AUROC = 0.994 BoNT-A separability · gap that text-based safety classifiers cannot detect</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/narrow-model-safety-eval" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/datasets/jang1563/narrow-model-safety-eval" target="_blank" rel="noopener">HF dataset</a>
+        </div>
+      </div>
+
+      <div class="anchor-card">
+        <div class="name">agentshield</div>
+        <div class="pitch">Agent security anchor — STRIDE threat model + 100-scenario attack suite + 4-component detection pipeline applied to a 23-agent biology stack.</div>
+        <div class="finding">100% ASR reduction · 100% direct-injection / multi-turn / tool-misuse detection · 1.0% FPR</div>
+        <div class="links">
+          <a href="https://github.com/jang1563/agentshield" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/datasets/jang1563/agentshield-attack-scenarios" target="_blank" rel="noopener">HF scenarios</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="infrastructure">
+  <div class="container">
+    <h2>Evaluation infrastructure</h2>
+    <p class="section-sub">Supporting repositories that the anchor portfolio reuses or builds on.</p>
+    <div class="infra-list">
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/BioProtocolBench" target="_blank" rel="noopener">BioProtocolBench</a></div>
+        <div class="desc">Inspect AI evaluation environment for AI agent execution of molecular-microbiology protocols. 14 tasks × 4 frontier models (Haiku-4.5: 0.856 · Sonnet-4.5: 0.852 · GPT-4o-mini: 0.744 · GPT-4o: 0.743).</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/BioEval" target="_blank" rel="noopener">BioEval</a></div>
+        <div class="desc">296-task multi-dimensional biological-reasoning benchmark across 12 components; 5-model evaluation. <a href="https://huggingface.co/datasets/jang1563/BioEval" target="_blank" rel="noopener">HF dataset</a>.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/SciReplicBench" target="_blank" rel="noopener">SciReplicBench</a></div>
+        <div class="desc">Inspect AI benchmark for computational reproducibility in computational biology. Docker-sandboxed execution + LLM-as-judge with self-consistency.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/BioRLHF" target="_blank" rel="noopener">BioRLHF</a></div>
+        <div class="desc">Three-stage alignment (SFT → DPO → GRPO) where evaluation findings drive the RL objectives. <a href="https://huggingface.co/jang1563/biorlhf-grpo-mistral-7b" target="_blank" rel="noopener">HF model</a>. Reduced expected calibration error by 62%.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/biothreat-eval" target="_blank" rel="noopener">biothreat-eval</a></div>
+        <div class="desc">LLM biosecurity capability evaluation + 4-stage attack chain risk model + RAND-style policy briefs. <a href="https://huggingface.co/datasets/jang1563/biothreat-eval" target="_blank" rel="noopener">HF dataset</a>.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/bioteam-ai" target="_blank" rel="noopener">bioteam-ai</a></div>
+        <div class="desc">23 agents × 11 workflows for biology research. 22 external API integrations, 2,700+ tests. The agent stack that AgentShield evaluates against.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="spaceflight">
+  <div class="container">
+    <h2>Spaceflight biology foundation</h2>
+    <p class="section-sub">Director of Spaceflight Research at Mason Lab, Weill Cornell Medicine. Five astronaut missions (Inspiration4, Polaris Dawn, Fram2, Blue Origin New Shepard, Axiom-2 plus Virgin Galactic parabolic flight). Co-founder of <strong>SOMA</strong> (Space Omics and Medical Atlas): 100+ institutions across 25+ countries.</p>
+    <div class="infra-list">
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/SpaceOmicsBench" target="_blank" rel="noopener">SpaceOmicsBench</a></div>
+        <div class="desc">21 ML tasks × 9 modalities + 100-question LLM evaluation (Inspiration4, NASA Twins, JAXA). <a href="https://huggingface.co/datasets/jang1563/SpaceOmicsBench" target="_blank" rel="noopener">HF dataset</a>.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/GeneLab_benchmark" target="_blank" rel="noopener">GeneLab_benchmark</a></div>
+        <div class="desc">NASA OSDR mouse bulk RNA-seq leave-one-mission-out benchmark for AI/ML and foundation models. v7.1, 6-version layered evaluation. <a href="https://huggingface.co/datasets/jang1563/genelab-benchmark" target="_blank" rel="noopener">HF dataset</a>.</div>
+      </div>
+      <div class="infra-item">
+        <div class="name"><a href="https://github.com/jang1563/evo2-spaceflight-vep" target="_blank" rel="noopener">evo2-spaceflight-vep</a></div>
+        <div class="desc">Zero-shot variant effect prediction using Evo2 7B genomic foundation model. Mean AUROC = 0.980 across 6 ClinVar-validated genes; 215K variants across 10 genes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="active">
+  <div class="container">
+    <h2>Active research (May 2026)</h2>
+    <div class="pubs-callout">
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li>📝 <strong>Calibrated Permissioning for Biological AI</strong> — NeurIPS 2026 Position Paper Track + ICML AI4GOOD Workshop</li>
+        <li>📊 <strong>Publication Bias Predicts LLM Discrimination of Negative Biological Results</strong> — NeurIPS 2026 D&amp;B Track. PBS Law: ρ = −0.754, p &lt; 3×10⁻⁵, N=20 biomedical domains</li>
+        <li>🧬 <strong>Guardians of the Mitochondria: Space Mitochondria 2.0 Systemic Analysis Across Species</strong> — <em>Cell</em> (in revision; co-first &amp; co-corresponding)</li>
+      </ul>
+    </div>
+    <h2 style="margin-top: 32px;">By the numbers</h2>
+    <div class="stat-grid" style="margin-top: 16px;">
+      <div class="stat"><div class="num">60+</div><div class="lbl">Peer-reviewed publications</div></div>
+      <div class="stat"><div class="num">16</div><div class="lbl">Nature Portfolio Group<br><span style="font-size:0.85em">(Nature ×3, Nat Commun ×8, Nat Microbiol ×1, Nat Rev Immunol ×1, Commun Biol ×3)</span></div></div>
+      <div class="stat"><div class="num">5</div><div class="lbl">Astronaut missions</div></div>
+      <div class="stat"><div class="num">15 / 5</div><div class="lbl">HF datasets / models</div></div>
+      <div class="stat"><div class="num">1</div><div class="lbl">Live HF Space</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="awards">
+  <div class="container">
+    <h2>Awards &amp; compute grants (2026)</h2>
+    <ul class="award-list">
+      <li><span class="when">2026-04-17</span><span class="what"><strong>Anthropic AI for Science Grant</strong> — $20K Claude API credits for NegBioDB</span></li>
+      <li><span class="when">2026-04-27</span><span class="what"><strong>NSF ACCESS Explore Allocation</strong> as PI (CIS260843) — 200K + 200K supplement compute credits, 12-month term</span></li>
+      <li><span class="when">2026-04-22</span><span class="what"><strong>NAIRR Pilot Start-Up</strong> as PI (NAIRR260165) — ~1,500 H100-hours, decision pending</span></li>
+      <li><span class="when">2024</span><span class="what"><strong>Boryung Humans In Space Challenge Orbital Launch Funding</strong> — $250K</span></li>
+      <li><span class="when">2016–2020</span><span class="what"><strong>Cheongam Science Fellowship</strong> — $25K/yr × 3</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="service">
+  <div class="container">
+    <h2>Service &amp; reviewing</h2>
+    <ul class="award-list">
+      <li><span class="when">Reviewer</span><span class="what">NeurIPS 2026 Position Paper Track</span></li>
+      <li><span class="when">Reviewer</span><span class="what">MLCSB at ISMB 2026</span></li>
+      <li><span class="when">Reviewer</span><span class="what"><em>Nature Communications</em>, <em>iScience</em>, <em>npj Microgravity</em>, <em>Acta Astronautica</em></span></li>
+      <li><span class="when">Co-founder</span><span class="what">Space Omics and Medical Atlas (SOMA) — 100+ institutions across 25+ countries</span></li>
+      <li><span class="when">Plenary / panels</span><span class="what">ASHG 2025 plenary · ESHG 2025 panelist · IAC 2025 · COSPAR 2024 session chair</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 JangKeun Kim, Ph.D. · Built with vanilla HTML/CSS · <a href="https://github.com/jang1563/jang1563.github.io" target="_blank" rel="noopener">Site source</a></p>
+    <p style="margin-top: 8px;">Calibration analysis (ECE, AUROC, Cohen's κ, Wilson 95% CI, McNemar, Krippendorff α) · STRIDE threat modeling · NSABB-category classification · Constitutional AI methodology · QLoRA / DPO / GRPO · vLLM · LLM-as-judge with self-consistency</p>
+  </div>
+</footer>
+
+</body>
+</html>

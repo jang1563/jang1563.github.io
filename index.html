@@ -1,478 +1,869 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JangKeun Kim, Ph.D. — Calibrated permissioning for biological AI safeguards</title>
-<meta name="description" content="Calibrated permissioning frontier of biological AI safeguards. Mason Lab @ Weill Cornell Medicine. 60+ peer-reviewed publications, 16 Nature Portfolio Group, 5 astronaut missions, 6 anchor safeguards repositories." />
-<meta property="og:title" content="JangKeun Kim — Calibrated permissioning for biological AI safeguards" />
-<meta property="og:description" content="Mason Lab @ Weill Cornell Medicine · 6 anchor biosafety repos · live HF Space demo · 60+ pubs" />
-<meta property="og:type" content="profile" />
-<meta property="og:url" content="https://jang1563.github.io" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧬%3C/text%3E%3C/svg%3E" />
-<style>
-  :root {
-    --bg: #0b0e14;
-    --panel: #131722;
-    --panel-2: #1b2030;
-    --text: #e6e9f0;
-    --text-dim: #9aa3b8;
-    --accent: #7c5cff;
-    --accent-2: #4cc9f0;
-    --good: #4ade80;
-    --warn: #f59e0b;
-    --danger: #f87171;
-    --border: #252a3a;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JangKeun Kim — Biological AI Evaluation</title>
+  <meta name="description" content="JangKeun Kim builds evaluation and evidence infrastructure for biological AI, spanning grounding, verification, agentic benchmarks, and spaceflight omics.">
+  <meta name="theme-color" content="#071013">
+  <link rel="canonical" href="https://jang1563.github.io/">
+  <meta property="og:title" content="JangKeun Kim — Evidence infrastructure for biological AI">
+  <meta property="og:description" content="Computational biology, model evaluation, reproducible benchmarks, and spaceflight multi-omics at Weill Cornell Medicine.">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://jang1563.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧬%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "JangKeun Kim",
+    "honorificSuffix": "Ph.D.",
+    "jobTitle": "Research Associate",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Weill Cornell Medicine"
+    },
+    "url": "https://jang1563.github.io/",
+    "sameAs": [
+      "https://github.com/jang1563",
+      "https://huggingface.co/jang1563",
+      "https://scholar.google.com/citations?user=07hptXkAAAAJ",
+      "https://orcid.org/0000-0002-8733-9925",
+      "https://www.linkedin.com/in/jangkeun-kim-16a74b19b/"
+    ]
   }
-  @media (prefers-color-scheme: light) {
+  </script>
+  <style>
     :root {
-      --bg: #fafaf7;
-      --panel: #ffffff;
-      --panel-2: #f3f3ee;
-      --text: #1a1a1a;
-      --text-dim: #555c6e;
-      --accent: #5b21b6;
-      --accent-2: #0e7490;
-      --border: #e5e5e0;
+      color-scheme: dark;
+      --bg: #071013;
+      --bg-soft: #0a1518;
+      --surface: #0e1a1d;
+      --surface-raised: #132327;
+      --text: #eff8f5;
+      --muted: #9eb3ad;
+      --quiet: #6f8881;
+      --accent: #68e0bd;
+      --accent-strong: #2dd4bf;
+      --accent-soft: rgba(104, 224, 189, 0.12);
+      --lime: #c8f36d;
+      --warm: #ffc17a;
+      --border: rgba(197, 231, 220, 0.14);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --max: 1160px;
     }
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
-    background: var(--bg); color: var(--text);
-    line-height: 1.55; font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--accent-2); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  code { font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; font-size: 0.9em; background: var(--panel-2); padding: 0.1em 0.4em; border-radius: 4px; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-  nav.top {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(11, 14, 20, 0.85); backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 0;
-  }
-  @media (prefers-color-scheme: light) { nav.top { background: rgba(250, 250, 247, 0.9); } }
-  nav.top .nav-inner {
-    display: flex; gap: 24px; align-items: center;
-    max-width: 1100px; margin: 0 auto; padding: 0 24px;
-    flex-wrap: wrap;
-  }
-  nav.top .brand { font-weight: 600; font-size: 0.95em; }
-  nav.top a { color: var(--text-dim); font-size: 0.92em; }
-  nav.top a:hover { color: var(--accent-2); text-decoration: none; }
-  header.hero {
-    padding: 64px 0 48px;
-    background: radial-gradient(ellipse at top, rgba(124, 92, 255, 0.12), transparent 60%);
-  }
-  header.hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
-  header.hero .subtitle { font-size: clamp(1rem, 2.4vw, 1.25rem); color: var(--text-dim); margin-bottom: 24px; }
-  header.hero .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-  header.hero .badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px; border-radius: 999px;
-    background: var(--panel); border: 1px solid var(--border);
-    font-size: 0.88em; color: var(--text);
-  }
-  header.hero .badge:hover { border-color: var(--accent); text-decoration: none; }
-  header.hero .badge svg { width: 14px; height: 14px; }
-  header.hero p.thesis { max-width: 780px; font-size: 1.05em; color: var(--text); }
-  header.hero p.thesis strong { color: var(--accent); }
-  section { padding: 48px 0; border-top: 1px solid var(--border); }
-  section h2 { font-size: 1.65rem; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
-  section .section-sub { color: var(--text-dim); margin-bottom: 32px; max-width: 720px; }
-  .stat-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-  }
-  .stat {
-    background: var(--panel); border: 1px solid var(--border);
-    padding: 16px 18px; border-radius: 12px;
-  }
-  .stat .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
-  .stat .lbl { font-size: 0.85em; color: var(--text-dim); margin-top: 2px; }
-  .calibration-callout {
-    background: var(--panel); border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    padding: 24px 28px; border-radius: 12px; margin-top: 24px;
-  }
-  .calibration-callout .label {
-    font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--accent); font-weight: 600; margin-bottom: 8px;
-  }
-  .calibration-chart { margin-top: 24px; padding: 0 8px; }
-  .bar-row { display: grid; grid-template-columns: 220px 1fr 80px; gap: 12px; align-items: center; padding: 6px 0; font-size: 0.92em; }
-  .bar-track { background: var(--panel-2); height: 18px; border-radius: 4px; overflow: hidden; position: relative; }
-  .bar-fill { height: 100%; transition: width 0.4s ease; }
-  .bar-fill.zero { background: var(--good); }
-  .bar-fill.med { background: var(--warn); }
-  .bar-fill.high { background: var(--danger); }
-  .bar-row .model { color: var(--text); font-family: "SF Mono", monospace; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-row .val { color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
-  .anchor-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px; margin-top: 16px;
-  }
-  .anchor-card {
-    background: var(--panel); border: 1px solid var(--border);
-    padding: 22px 24px; border-radius: 12px;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-  }
-  .anchor-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .anchor-card .name {
-    font-family: "SF Mono", monospace; font-size: 1em; font-weight: 600;
-    color: var(--text); margin-bottom: 8px;
-  }
-  .anchor-card .pitch { color: var(--text-dim); font-size: 0.92em; margin-bottom: 12px; }
-  .anchor-card .finding {
-    color: var(--text); font-size: 0.92em; padding: 8px 12px;
-    background: var(--panel-2); border-radius: 6px; margin-bottom: 12px;
-  }
-  .anchor-card .links { display: flex; gap: 12px; font-size: 0.85em; flex-wrap: wrap; }
-  .anchor-card .links a { color: var(--accent-2); }
-  .infra-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .infra-item {
-    background: var(--panel); border: 1px solid var(--border);
-    padding: 16px 18px; border-radius: 8px;
-  }
-  .infra-item .name { font-family: "SF Mono", monospace; font-size: 0.95em; font-weight: 600; margin-bottom: 4px; }
-  .infra-item .desc { color: var(--text-dim); font-size: 0.88em; }
-  .award-list { list-style: none; padding: 0; }
-  .award-list li {
-    padding: 12px 0; border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: baseline;
-  }
-  .award-list li:last-child { border-bottom: none; }
-  .award-list .when { color: var(--text-dim); font-size: 0.88em; }
-  .award-list .what { color: var(--text); }
-  .pubs-callout { background: var(--panel); border: 1px solid var(--border); padding: 20px 24px; border-radius: 12px; margin-top: 16px; }
-  footer {
-    padding: 48px 0 64px; border-top: 1px solid var(--border);
-    color: var(--text-dim); font-size: 0.9em; text-align: center;
-  }
-  .reviewer-route {
-    background: var(--panel); border: 1px solid var(--border);
-    padding: 24px 28px; border-radius: 12px; margin-top: 16px;
-    counter-reset: step;
-  }
-  .reviewer-route ol { list-style: none; padding: 0; }
-  .reviewer-route li {
-    padding: 12px 0; padding-left: 44px; position: relative;
-    border-bottom: 1px dashed var(--border);
-  }
-  .reviewer-route li:last-child { border-bottom: none; }
-  .reviewer-route li::before {
-    counter-increment: step;
-    content: counter(step);
-    position: absolute; left: 0; top: 12px;
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--accent); color: white;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 0.85em;
-  }
-</style>
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #f6faf7;
+        --bg-soft: #edf5f1;
+        --surface: #ffffff;
+        --surface-raised: #f2f8f5;
+        --text: #10231e;
+        --muted: #506c64;
+        --quiet: #728981;
+        --accent: #087f67;
+        --accent-strong: #0f8f78;
+        --accent-soft: rgba(8, 127, 103, 0.09);
+        --lime: #557f0e;
+        --warm: #9a570d;
+        --border: rgba(23, 73, 60, 0.15);
+        --shadow: 0 24px 70px rgba(39, 84, 71, 0.12);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 82% 8%, rgba(45, 212, 191, 0.12), transparent 30rem),
+        radial-gradient(circle at 10% 28%, rgba(200, 243, 109, 0.06), transparent 27rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--warm);
+      outline-offset: 4px;
+    }
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--text);
+      color: var(--bg);
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter: blur(18px);
+    }
+    .nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 720;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links .contact-link {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+    }
+
+    .hero { padding: clamp(76px, 11vw, 136px) 0 82px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+      gap: clamp(42px, 8vw, 96px);
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 760;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 1px;
+      background: currentColor;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 780px;
+      margin-bottom: 24px;
+      font-size: clamp(3rem, 7.2vw, 6.3rem);
+      font-weight: 760;
+      letter-spacing: -0.065em;
+      line-height: 0.95;
+    }
+    h1 .accent { color: var(--accent); }
+    .hero-lead {
+      max-width: 700px;
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 1.9vw, 1.35rem);
+      line-height: 1.55;
+    }
+    .role-line {
+      margin-bottom: 30px;
+      color: var(--text);
+      font-size: 0.96rem;
+    }
+    .role-line span { color: var(--quiet); }
+    .actions, .profile-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .contact-profiles { margin-top: 24px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 10px 17px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 680;
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+    .button:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .button.primary {
+      border-color: transparent;
+      background: var(--accent);
+      color: #062219;
+    }
+    .button.primary:hover { background: var(--lime); }
+
+    .evidence-loop {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, var(--surface-raised), var(--surface));
+      box-shadow: var(--shadow);
+    }
+    .evidence-loop::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -70px;
+      bottom: -95px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+    }
+    .loop-label {
+      margin-bottom: 22px;
+      color: var(--quiet);
+      font-size: 0.74rem;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .loop-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 14px;
+      padding: 0 0 24px;
+    }
+    .loop-step:last-child { padding-bottom: 0; }
+    .loop-step:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      top: 34px;
+      bottom: 2px;
+      left: 17px;
+      width: 1px;
+      background: var(--border);
+    }
+    .loop-index {
+      z-index: 1;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface-raised);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .loop-step h2 {
+      margin: 1px 0 2px;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .loop-step p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    section { padding: 92px 0; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.7fr) minmax(320px, 1fr);
+      gap: 56px;
+      align-items: end;
+      margin-bottom: 42px;
+    }
+    .section-head h2 {
+      margin-bottom: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+    .section-head p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+    .project-card {
+      grid-column: span 6;
+      min-height: 370px;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .project-card:first-child {
+      grid-column: span 12;
+      min-height: 345px;
+      background:
+        linear-gradient(120deg, var(--accent-soft), transparent 62%),
+        var(--surface);
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.13);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .project-number {
+      color: var(--quiet);
+      font: 680 0.76rem ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.08em;
+    }
+    .project-tag {
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 720;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .project-card h3 {
+      margin-bottom: 12px;
+      font-size: clamp(1.45rem, 2.5vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+    .project-card > p {
+      max-width: 760px;
+      margin-bottom: 22px;
+      color: var(--muted);
+    }
+    .evidence-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+    .evidence-row span {
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: var(--surface-raised);
+      color: var(--text);
+      font-size: 0.78rem;
+    }
+    .scope-note {
+      margin: -6px 0 24px;
+      padding-left: 12px;
+      border-left: 2px solid var(--warm);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .card-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: auto;
+    }
+    .card-links a {
+      color: var(--accent);
+      font-size: 0.86rem;
+      font-weight: 680;
+      text-decoration: none;
+    }
+    .card-links a:hover { text-decoration: underline; }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+    .feature-panel, .practice-panel {
+      padding: clamp(28px, 5vw, 46px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+    }
+    .feature-panel {
+      background:
+        radial-gradient(circle at 92% 8%, rgba(104, 224, 189, 0.15), transparent 16rem),
+        var(--surface);
+    }
+    .feature-panel h3, .practice-panel h3 {
+      margin-bottom: 16px;
+      font-size: clamp(1.55rem, 3vw, 2.2rem);
+      line-height: 1.16;
+      letter-spacing: -0.035em;
+    }
+    .feature-panel > p, .practice-panel > p { color: var(--muted); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 28px 0;
+    }
+    .metric {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--surface-raised) 70%, transparent);
+    }
+    .metric strong {
+      display: block;
+      color: var(--lime);
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+    .metric span {
+      display: block;
+      margin-top: 4px;
+      color: var(--quiet);
+      font-size: 0.75rem;
+    }
+    .practice-list {
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .practice-list li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 12px;
+      padding: 15px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .practice-list li::before {
+      content: "↳";
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .credentials {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+    .credential {
+      padding: 24px;
+      border-top: 2px solid var(--accent);
+      background: linear-gradient(180deg, var(--accent-soft), transparent);
+    }
+    .credential strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 1.65rem;
+      letter-spacing: -0.035em;
+    }
+    .credential span { color: var(--muted); font-size: 0.84rem; }
+    .recognition-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .recognition {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+    .recognition .year {
+      color: var(--accent);
+      font: 720 0.75rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .recognition h3 { margin: 10px 0 5px; font-size: 1rem; }
+    .recognition p { margin-bottom: 0; color: var(--muted); font-size: 0.85rem; }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+      padding: clamp(32px, 7vw, 68px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(120deg, var(--accent-soft), transparent 65%),
+        var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .contact-panel h2 {
+      max-width: 730px;
+      margin-bottom: 13px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+    .contact-panel p { margin-bottom: 0; color: var(--muted); }
+
+    footer {
+      padding: 44px 0 58px;
+      color: var(--quiet);
+      font-size: 0.82rem;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner p { margin-bottom: 0; }
+    .footer-inner a { color: var(--muted); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .section-head, .research-grid, .contact-panel {
+        grid-template-columns: 1fr;
+      }
+      .hero-grid { gap: 58px; }
+      .section-head { gap: 18px; }
+      .project-card, .project-card:first-child { grid-column: span 12; }
+      .credentials { grid-template-columns: repeat(2, 1fr); }
+      .recognition-list { grid-template-columns: 1fr; }
+      .contact-panel .button { justify-self: start; }
+    }
+
+    @media (max-width: 650px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .nav { min-height: 58px; }
+      .nav-links a:not(.contact-link) { display: none; }
+      .hero { padding-top: 72px; }
+      h1 { font-size: clamp(2.75rem, 15vw, 4.4rem); }
+      section { padding: 68px 0; }
+      .evidence-loop, .project-card, .feature-panel, .practice-panel { padding: 23px; }
+      .metric-grid { grid-template-columns: 1fr; }
+      .credentials { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<nav class="top">
-  <div class="nav-inner">
-    <span class="brand">JangKeun Kim, Ph.D.</span>
-    <a href="#calibration">Calibration gap</a>
-    <a href="#anchors">Anchor portfolio</a>
-    <a href="#infrastructure">Eval infra</a>
-    <a href="#spaceflight">Spaceflight</a>
-    <a href="#awards">Awards</a>
-    <a href="#service">Service</a>
-    <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">Live demo →</a>
-  </div>
-</nav>
+  <header class="topbar">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="brand" href="#top">JangKeun Kim, Ph.D.</a>
+      <div class="nav-links">
+        <a href="#work">Selected work</a>
+        <a href="#research">Research</a>
+        <a href="#background">Background</a>
+        <a class="contact-link" href="mailto:jak4013@med.cornell.edu">Contact</a>
+      </div>
+    </nav>
+  </header>
 
-<header class="hero">
-  <div class="container">
-    <h1>JangKeun Kim, Ph.D.</h1>
-    <p class="subtitle">Calibrated permissioning for biological AI safeguards · Director of Spaceflight Research, Mason Lab @ Weill Cornell Medicine</p>
-    <div class="badges">
-      <a class="badge" href="https://scholar.google.com/citations?user=07hptXkAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
-      <a class="badge" href="https://orcid.org/0000-0002-8733-9925" target="_blank" rel="noopener">ORCID</a>
-      <a class="badge" href="https://github.com/jang1563" target="_blank" rel="noopener">GitHub</a>
-      <a class="badge" href="https://huggingface.co/jang1563" target="_blank" rel="noopener">🤗 HuggingFace</a>
-      <a class="badge" href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">🤗 Live Demo</a>
-      <a class="badge" href="https://www.linkedin.com/in/jangkeun-kim-16a74b19b/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="badge" href="mailto:jak4013@med.cornell.edu">Email</a>
-    </div>
-    <p class="thesis">
-      I work on the <strong>calibrated permissioning frontier of biological AI safeguards</strong>: jointly minimizing false negatives (harmful assistance) and false positives (blocked legitimate research). My empirical finding (April 2026) is that no measured frontier model sits in the low-FPR / low-FNR region for biology-specific distributions. The portfolio below is built to close that gap.
-    </p>
-  </div>
-</header>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Computational biology × AI evaluation</p>
+          <h1>Evidence infrastructure for <span class="accent">biological AI.</span></h1>
+          <p class="hero-lead">
+            I build benchmarks and reproducible systems that test whether models ground specialist outputs,
+            allocate verification where it matters, and generalize across real biological data.
+          </p>
+          <p class="role-line">
+            Research Associate, Mason Lab, Weill Cornell Medicine
+            <span>· functional lead for day-to-day spaceflight research</span>
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#work">Explore selected work ↓</a>
+            <a class="button" href="https://github.com/jang1563" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            <a class="button" href="https://scholar.google.com/citations?user=07hptXkAAAAJ" target="_blank" rel="noopener noreferrer">Publications ↗</a>
+          </div>
+        </div>
 
-<section id="route">
-  <div class="container">
-    <h2>Reviewer route in 15 minutes</h2>
-    <p class="section-sub">If this is your first visit and you have only 15 minutes, this is the order I would suggest.</p>
-    <div class="reviewer-route">
-      <ol>
-        <li><strong>(2 min)</strong> Open the <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">bio-overrefusal-explorer Space</a> — browse the 201-query benchmark and 9-model FPR with Wilson 95% CIs. No model API calls happen at runtime; the data is pre-computed.</li>
-        <li><strong>(5 min)</strong> Read <a href="https://github.com/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">bio-overrefusal-v0.1</a> README + <a href="https://github.com/jang1563/bio-overrefusal-v0.1/blob/main/SAFETY.md" target="_blank" rel="noopener">SAFETY.md</a>. The "How This Maps to AI Safety Practice" section orients you to the broader stack.</li>
-        <li><strong>(5 min)</strong> Read <a href="https://github.com/jang1563/constitutional-bioguard" target="_blank" rel="noopener">constitutional-bioguard</a> README. Same pattern: thesis, status, AI-safety mapping, SAFETY.md.</li>
-        <li><strong>(3 min)</strong> Skim <a href="https://github.com/jang1563/ambiguity-casebook" target="_blank" rel="noopener">ambiguity-casebook</a> — 36 NSABB-anchored boundary cases under a 12-field template.</li>
-      </ol>
-    </div>
-  </div>
-</section>
+        <aside class="evidence-loop" aria-label="Research workflow: ground, verify, generalize, reproduce">
+          <p class="loop-label">The evaluation stack</p>
+          <div class="loop-step">
+            <span class="loop-index">01</span>
+            <div><h2>Ground</h2><p>Test whether a model understands a specialist output by content, not by name.</p></div>
+          </div>
+          <div class="loop-step">
+            <span class="loop-index">02</span>
+            <div><h2>Verify</h2><p>Measure when an agent trusts a prediction and when it runs the real assay.</p></div>
+          </div>
+          <div class="loop-step">
+            <span class="loop-index">03</span>
+            <div><h2>Generalize</h2><p>Hold out missions, experiments, or environments—not just random rows.</p></div>
+          </div>
+          <div class="loop-step">
+            <span class="loop-index">04</span>
+            <div><h2>Reproduce</h2><p>Ship public artifacts, deterministic checks, provenance, and honest claim boundaries.</p></div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-<section id="calibration">
-  <div class="container">
-    <h2>Empirical calibration gap (April 2026)</h2>
-    <p class="section-sub">Strict false-positive refusal rate (FPR) on 181 legitimate biology research queries (Tiers 1–4). Every refusal here is on a query a credentialed biology researcher would consider appropriate to answer.</p>
+    <section id="work">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Selected work</p>
+            <h2>Capability, measured.</h2>
+          </div>
+          <p>
+            Five public projects spanning model grounding, verification-aware agents, mission-shift
+            generalization, drug-discovery decisions, and laboratory execution. Each links claims to
+            inspectable code, data, or result artifacts.
+          </p>
+        </div>
 
-    <div class="calibration-callout">
-      <div class="label">Headline finding</div>
-      <p>Anthropic Sonnet 4.5/4.6 refused <strong>33.7%</strong> of legitimate queries; Opus 4.7 refused <strong>43.6%</strong>; the other 6 frontier models tested refused 0–0.5%. All Anthropic refusals were hard API-level stops (<code>stop_reason="refusal"</code>, empty response). McNemar p&lt;0.0001; exact binomial test vs published 0.05% baseline p&lt;0.0001.</p>
-    </div>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="card-top"><span class="project-number">PROJECT 01</span><span class="project-tag">Grounding</span></div>
+            <h3>grounding-atlas</h3>
+            <p>
+              A measurement-first map of whether language models ground the content of biological
+              representations—sequence, structure, identifiers, and numeric predictions—or rely on labels and familiarity.
+              It connects measured gaps to a practical train, retrieve, or orchestrate decision map.
+            </p>
+            <div class="evidence-row">
+              <span>17 representations studied</span><span>24 GroundBench tasks</span><span>9 modalities</span><span>GPU-free output harness</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/grounding-atlas" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/grounding-atlas" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://github.com/jang1563/grounding-atlas/blob/main/results/SYNTHESIS.md" target="_blank" rel="noopener noreferrer">Results ↗</a>
+            </div>
+          </article>
 
-    <div class="calibration-chart" aria-label="Per-model FPR with Wilson 95% CIs">
-      <div class="bar-row">
-        <span class="model">claude-haiku-4-5</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">deepseek-chat</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">gemini-2.5-flash</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">gpt-4o-mini</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">gpt-4o</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">llama-3.3-70b</span>
-        <div class="bar-track"><div class="bar-fill zero" style="width:1%"></div></div>
-        <span class="val">0.0%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">claude-sonnet-4-5</span>
-        <div class="bar-track"><div class="bar-fill high" style="width:33.7%"></div></div>
-        <span class="val">33.7%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">claude-sonnet-4-6</span>
-        <div class="bar-track"><div class="bar-fill high" style="width:33.7%"></div></div>
-        <span class="val">33.7%</span>
-      </div>
-      <div class="bar-row">
-        <span class="model">claude-opus-4-7</span>
-        <div class="bar-track"><div class="bar-fill high" style="width:43.6%"></div></div>
-        <span class="val">43.6%</span>
-      </div>
-    </div>
-    <p style="color: var(--text-dim); font-size: 0.85em; margin-top: 16px;">Numbers should be read as a slice-level calibration signal for this specific biology-research benchmark, not as a global model-quality ranking or a claim about any provider's full safety system. Reproducible from a fresh clone via the linked repository (~5 min smoke test, ~$0.06–$15.82 per full eval depending on model). <a href="https://github.com/jang1563/bio-overrefusal-v0.1#headline-finding" target="_blank" rel="noopener">See full report →</a></p>
-  </div>
-</section>
+          <article class="project-card">
+            <div class="card-top"><span class="project-number">PROJECT 02</span><span class="project-tag">Verification</span></div>
+            <h3>Verify-or-Trust</h3>
+            <p>
+              A verifiable-reward benchmark for a central agentic decision: when a biology foundation model may be wrong,
+              should the agent trust it or spend budget on a real differential-expression assay?
+            </p>
+            <div class="evidence-row">
+              <span>Held-out perturb-seq truth</span><span>Real DE tool</span><span>107-panel study</span><span>LLM-free baselines</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/verify-or-trust" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/verify-or-trust" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://github.com/jang1563/verify-or-trust/blob/main/results/RESULTS.md" target="_blank" rel="noopener noreferrer">Results ↗</a>
+            </div>
+          </article>
 
-<section id="anchors">
-  <div class="container">
-    <h2>Anchor portfolio (6 repositories)</h2>
-    <p class="section-sub">Each anchor repo has the same five-section <code>SAFETY.md</code> (in/out scope, withheld content, reporting, limitations) and a "How This Maps to AI Safety Practice" section that links across the 5 other anchors.</p>
+          <article class="project-card">
+            <div class="card-top"><span class="project-number">PROJECT 03</span><span class="project-tag">Space biology</span></div>
+            <h3>SpaceBio-Bench</h3>
+            <p>
+              Mission-held-out transcriptomics benchmarks for a hard biological generalization question:
+              can a model trained on one spaceflight study recognize a signal in a mission it has never seen?
+            </p>
+            <div class="evidence-row">
+              <span>NASA OSDR data</span><span>8 tissues</span><span>Mission-held-out splits</span><span>Public fold package</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/GeneLab_benchmark" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/genelab-benchmark" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://github.com/jang1563/GeneLab_benchmark/blob/main/docs/CANONICAL_RESULTS_V7_1.md" target="_blank" rel="noopener noreferrer">Canonical results ↗</a>
+            </div>
+          </article>
 
-    <div class="anchor-grid">
+          <article class="project-card">
+            <div class="card-top"><span class="project-number">PROJECT 04</span><span class="project-tag">Agent systems</span></div>
+            <h3>Agentic Drug Discovery System</h3>
+            <p>
+              An auditable clinical and regulatory decision benchmark with callable data adapters,
+              verifier contracts, an installable scorer, and reproducible clinical-trial decision labels.
+            </p>
+            <div class="evidence-row">
+              <span>Source-derived labels</span><span>Tool adapters</span><span>Verifier contracts</span><span>Installable scorer</span>
+            </div>
+            <p class="scope-note">
+              Current scope: a retrospective benchmark plus one audited end-to-end disease slice—not a finished eight-stage discovery platform.
+            </p>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/agentic-drug-discovery-system" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://github.com/jang1563/agentic-drug-discovery-system/blob/main/docs/12_scd_vertical_slice.md" target="_blank" rel="noopener noreferrer">Audited slice ↗</a>
+            </div>
+          </article>
 
-      <div class="anchor-card">
-        <div class="name">bio-overrefusal-v0.1</div>
-        <div class="pitch">Calibration anchor — 201 expert-annotated biology queries × 9 frontier models, false-positive refusal rate (FPR) with Wilson 95% CIs.</div>
-        <div class="finding">Sonnet 4.5/4.6: 33.7% FPR · Opus 4.7: 43.6% · Other 6 models: ≤0.5%</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/datasets/jang1563/bio-overrefusal-v0.1" target="_blank" rel="noopener">HF dataset</a>
-          <a href="https://huggingface.co/spaces/jang1563/bio-overrefusal-explorer" target="_blank" rel="noopener">Live Space</a>
+          <article class="project-card">
+            <div class="card-top"><span class="project-number">PROJECT 05</span><span class="project-tag">Agent evaluation</span></div>
+            <h3>LabCraft-Eval</h3>
+            <p>
+              An Inspect AI environment that evaluates agents executing benign molecular-microbiology protocols
+              inside a seeded stochastic simulator, with deterministic four-axis trajectory scoring.
+            </p>
+            <div class="evidence-row">
+              <span>Seeded simulator</span><span>Trajectory-level scoring</span><span>Inspect AI</span><span>Provenance-checked export</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/LabCraft-Eval" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/LabCraft-Eval" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://huggingface.co/spaces/jang1563/LabCraft-Eval-Leaderboard" target="_blank" rel="noopener noreferrer">Leaderboard ↗</a>
+            </div>
+          </article>
         </div>
       </div>
+    </section>
 
-      <div class="anchor-card">
-        <div class="name">constitutional-bioguard</div>
-        <div class="pitch">Classifier anchor — DeBERTa-v3-base fine-tuned on a 56-rule biosafety constitution × 7 NSABB categories. Domain-extension prototype.</div>
-        <div class="finding">Held-out F1 = 0.980 · AUROC = 0.998 · 0/325 over-refusal FPR · 9.79% mean adversarial ASR</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/constitutional-bioguard" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/jang1563/constitutional-bioguard-deberta-v1" target="_blank" rel="noopener">HF model</a>
+    <section id="research">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Research program</p>
+            <h2>Biology is the test bed.</h2>
+          </div>
+          <p>
+            My evaluation work is grounded in computational biology: human spaceflight multi-omics,
+            single-cell and spatial genomics, perturb-seq, and the practical constraints of scientific workflows.
+          </p>
+        </div>
+
+        <div class="research-grid">
+          <article class="feature-panel">
+            <p class="eyebrow">Featured benchmark</p>
+            <h3>SpaceOmicsBench</h3>
+            <p>
+              A multi-omics AI benchmark built from public spaceflight biomedical releases across
+              Inspiration4, the NASA Twins Study, and JAXA Cell-Free Epigenome data.
+            </p>
+            <div class="metric-grid">
+              <div class="metric"><strong>21</strong><span>ML tasks</span></div>
+              <div class="metric"><strong>9</strong><span>modalities</span></div>
+              <div class="metric"><strong>100</strong><span>LLM questions</span></div>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/jang1563/SpaceOmicsBench" target="_blank" rel="noopener noreferrer">Repository ↗</a>
+              <a href="https://huggingface.co/datasets/jang1563/SpaceOmicsBench" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+              <a href="https://jang1563.github.io/SpaceOmicsBench/demo.html" target="_blank" rel="noopener noreferrer">Interactive demo ↗</a>
+            </div>
+          </article>
+
+          <article class="practice-panel">
+            <p class="eyebrow">How I work</p>
+            <h3>From biological question to auditable artifact.</h3>
+            <ul class="practice-list">
+              <li>Define the independence unit before choosing a split or metric.</li>
+              <li>Use domain evidence and real tools instead of answer-only judging where possible.</li>
+              <li>Separate deterministic value proofs from stochastic model runs.</li>
+              <li>Publish provenance, limitations, and machine-readable release surfaces with the result.</li>
+            </ul>
+          </article>
         </div>
       </div>
+    </section>
 
-      <div class="anchor-card">
-        <div class="name">ambiguity-casebook</div>
-        <div class="pitch">Boundary case anchor — 36 dual-use cases × 6 categories (NSABB / FSAP / BWC / CWC anchored) under a 12-field structured template.</div>
-        <div class="finding">30/36 cases trigger API-level refusals before model reasoning engages</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/ambiguity-casebook" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/datasets/jang1563/ambiguity-casebook" target="_blank" rel="noopener">HF dataset</a>
+    <section id="background">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Research foundation</p>
+            <h2>Depth in biology. Range in AI.</h2>
+          </div>
+          <p>
+            I serve as a Research Associate in the Mason Lab at Weill Cornell Medicine and lead the lab's
+            day-to-day spaceflight research program, connecting biomedical discovery with rigorous AI evaluation.
+          </p>
+        </div>
+
+        <div class="credentials">
+          <div class="credential"><strong>60+</strong><span>peer-reviewed publications</span></div>
+          <div class="credential"><strong>20</strong><span>Nature Portfolio publications</span></div>
+          <div class="credential"><strong>100+</strong><span>SOMA institutions</span></div>
+          <div class="credential"><strong>25+</strong><span>countries in the SOMA network</span></div>
+        </div>
+
+        <div class="recognition-list">
+          <article class="recognition">
+            <span class="year">2026</span>
+            <h3>Anthropic AI for Science Grant</h3>
+            <p>Compute support for research on evidence-aware biological language models.</p>
+          </article>
+          <article class="recognition">
+            <span class="year">2026</span>
+            <h3>NSF ACCESS Explore Allocation</h3>
+            <p>Principal investigator allocation for scalable computational research.</p>
+          </article>
+          <article class="recognition">
+            <span class="year">2024</span>
+            <h3>Humans In Space Challenge</h3>
+            <p>Orbital launch funding for spaceflight biomedical research.</p>
+          </article>
         </div>
       </div>
+    </section>
 
-      <div class="anchor-card">
-        <div class="name">bio-constitution-rules</div>
-        <div class="pitch">Rule + label anchor — 30 machine-readable rules × 6 bio domains, with end-to-end training pipeline and 1,063-record synthetic corpus.</div>
-        <div class="finding">100% [91.6%, 100%] on a 42-query pilot · +47.6 pp vs generic CBRN baseline · v0.2 stratified eval pending</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/bio-constitution-rules" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/datasets/jang1563/bio-constitution-rules" target="_blank" rel="noopener">HF dataset</a>
+    <section id="contact">
+      <div class="container">
+        <div class="contact-panel">
+          <div>
+            <p class="eyebrow">Connect</p>
+            <h2>Building better evidence for biological AI.</h2>
+            <p>Open to research conversations across AI for science, evaluation, post-training, and computational biology.</p>
+          </div>
+          <a class="button primary" href="mailto:jak4013@med.cornell.edu">Email me ↗</a>
+        </div>
+        <div class="profile-links contact-profiles">
+          <a class="button" href="https://github.com/jang1563" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="button" href="https://huggingface.co/jang1563" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+          <a class="button" href="https://scholar.google.com/citations?user=07hptXkAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+          <a class="button" href="https://orcid.org/0000-0002-8733-9925" target="_blank" rel="noopener noreferrer">ORCID</a>
+          <a class="button" href="https://www.linkedin.com/in/jangkeun-kim-16a74b19b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
+    </section>
+  </main>
 
-      <div class="anchor-card">
-        <div class="name">narrow-model-safety-eval</div>
-        <div class="pitch">Narrow-model dual-use anchor — FSPE / FSI metrics + Physical Realizability Tier system applied to ESM-2, ProteinMPNN, EvoDiff, LigandMPNN.</div>
-        <div class="finding">AUROC = 0.994 BoNT-A separability · gap that text-based safety classifiers cannot detect</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/narrow-model-safety-eval" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/datasets/jang1563/narrow-model-safety-eval" target="_blank" rel="noopener">HF dataset</a>
-        </div>
-      </div>
-
-      <div class="anchor-card">
-        <div class="name">agentshield</div>
-        <div class="pitch">Agent security anchor — STRIDE threat model + 100-scenario attack suite + 4-component detection pipeline applied to a 23-agent biology stack.</div>
-        <div class="finding">100% ASR reduction · 100% direct-injection / multi-turn / tool-misuse detection · 1.0% FPR</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/agentshield" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/datasets/jang1563/agentshield-attack-scenarios" target="_blank" rel="noopener">HF scenarios</a>
-        </div>
-      </div>
-
-      <div class="anchor-card">
-        <div class="name">negbiodb-safety-calibration</div>
-        <div class="pitch">Calibration extension — 5-domain × 2-provider × 2-prompt aggregate (N = 4,000) of frontier-LLM abstention behavior, PBS-stratified. Companion safety memo to the private NegBioDB / P8A NeurIPS 2026 D&amp;B submission.</div>
-        <div class="finding">Domain-conditional abstention; 0/4,000 hard refusals; IDK rate non-monotonic in PBS · aggregate metrics only</div>
-        <div class="links">
-          <a href="https://github.com/jang1563/negbiodb-safety-calibration" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://github.com/jang1563/negbiodb-safety-calibration/blob/main/data/e4_calibration_summary.csv" target="_blank" rel="noopener">5-domain CSV</a>
-        </div>
-      </div>
-
+  <footer>
+    <div class="container footer-inner">
+      <p>© 2026 JangKeun Kim, Ph.D. · New York, NY</p>
+      <p><a href="https://github.com/jang1563/jang1563.github.io" target="_blank" rel="noopener noreferrer">Site source ↗</a> · Vanilla HTML/CSS</p>
     </div>
-  </div>
-</section>
-
-<section id="infrastructure">
-  <div class="container">
-    <h2>Evaluation infrastructure</h2>
-    <p class="section-sub">Supporting repositories that the anchor portfolio reuses or builds on.</p>
-    <div class="infra-list">
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/BioProtocolBench" target="_blank" rel="noopener">BioProtocolBench</a></div>
-        <div class="desc">Inspect AI evaluation environment for AI agent execution of molecular-microbiology protocols. 14 tasks × 4 frontier models (Haiku-4.5: 0.856 · Sonnet-4.5: 0.852 · GPT-4o-mini: 0.744 · GPT-4o: 0.743).</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/BioEval" target="_blank" rel="noopener">BioEval</a></div>
-        <div class="desc">296-task multi-dimensional biological-reasoning benchmark across 12 components; 5-model evaluation. <a href="https://huggingface.co/datasets/jang1563/BioEval" target="_blank" rel="noopener">HF dataset</a>.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/SciReplicBench" target="_blank" rel="noopener">SciReplicBench</a></div>
-        <div class="desc">Inspect AI benchmark for computational reproducibility in computational biology. Docker-sandboxed execution + LLM-as-judge with self-consistency.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/BioRLHF" target="_blank" rel="noopener">BioRLHF</a></div>
-        <div class="desc">Three-stage alignment (SFT → DPO → GRPO) where evaluation findings drive the RL objectives. <a href="https://huggingface.co/jang1563/biorlhf-grpo-mistral-7b" target="_blank" rel="noopener">HF model</a>. Reduced expected calibration error by 62%.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/biothreat-eval" target="_blank" rel="noopener">biothreat-eval</a></div>
-        <div class="desc">LLM biosecurity capability evaluation + 4-stage attack chain risk model + RAND-style policy briefs. <a href="https://huggingface.co/datasets/jang1563/biothreat-eval" target="_blank" rel="noopener">HF dataset</a>.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/bioteam-ai" target="_blank" rel="noopener">bioteam-ai</a></div>
-        <div class="desc">23 agents × 11 workflows for biology research. 22 external API integrations, 2,700+ tests. The agent stack that AgentShield evaluates against.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="spaceflight">
-  <div class="container">
-    <h2>Spaceflight biology foundation</h2>
-    <p class="section-sub">Director of Spaceflight Research at Mason Lab, Weill Cornell Medicine. Five astronaut missions (Inspiration4, Polaris Dawn, Fram2, Blue Origin New Shepard, Axiom-2 plus Virgin Galactic parabolic flight). Co-founder of <strong>SOMA</strong> (Space Omics and Medical Atlas): 100+ institutions across 25+ countries.</p>
-    <div class="infra-list">
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/SpaceOmicsBench" target="_blank" rel="noopener">SpaceOmicsBench</a></div>
-        <div class="desc">21 ML tasks × 9 modalities + 100-question LLM evaluation (Inspiration4, NASA Twins, JAXA). <a href="https://huggingface.co/datasets/jang1563/SpaceOmicsBench" target="_blank" rel="noopener">HF dataset</a>.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/GeneLab_benchmark" target="_blank" rel="noopener">GeneLab_benchmark</a></div>
-        <div class="desc">NASA OSDR mouse bulk RNA-seq leave-one-mission-out benchmark for AI/ML and foundation models. v7.1, 6-version layered evaluation. <a href="https://huggingface.co/datasets/jang1563/genelab-benchmark" target="_blank" rel="noopener">HF dataset</a>.</div>
-      </div>
-      <div class="infra-item">
-        <div class="name"><a href="https://github.com/jang1563/evo2-spaceflight-vep" target="_blank" rel="noopener">evo2-spaceflight-vep</a></div>
-        <div class="desc">Zero-shot variant effect prediction using Evo2 7B genomic foundation model. Mean AUROC = 0.980 across 6 ClinVar-validated genes; 215K variants across 10 genes.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="active">
-  <div class="container">
-    <h2>Active research (May 2026)</h2>
-    <div class="pubs-callout">
-      <ul style="list-style: none; padding: 0; line-height: 2;">
-        <li>📝 <strong>Calibrated Permissioning for Biological AI</strong> — NeurIPS 2026 Position Paper Track + ICML AI4GOOD Workshop</li>
-        <li>📊 <strong>Publication Bias Predicts LLM Discrimination of Negative Biological Results</strong> — NeurIPS 2026 D&amp;B Track. PBS Law: ρ = −0.754, p &lt; 3×10⁻⁵, N=20 biomedical domains</li>
-        <li>🧬 <strong>Guardians of the Mitochondria: Space Mitochondria 2.0 Systemic Analysis Across Species</strong> — <em>Cell</em> (in revision; co-first &amp; co-corresponding)</li>
-      </ul>
-    </div>
-    <h2 style="margin-top: 32px;">By the numbers</h2>
-    <div class="stat-grid" style="margin-top: 16px;">
-      <div class="stat"><div class="num">60+</div><div class="lbl">Peer-reviewed publications</div></div>
-      <div class="stat"><div class="num">16</div><div class="lbl">Nature Portfolio Group<br><span style="font-size:0.85em">(Nature ×3, Nat Commun ×8, Nat Microbiol ×1, Nat Rev Immunol ×1, Commun Biol ×3)</span></div></div>
-      <div class="stat"><div class="num">5</div><div class="lbl">Astronaut missions</div></div>
-      <div class="stat"><div class="num">15 / 5</div><div class="lbl">HF datasets / models</div></div>
-      <div class="stat"><div class="num">1</div><div class="lbl">Live HF Space</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="awards">
-  <div class="container">
-    <h2>Awards &amp; compute grants (2026)</h2>
-    <ul class="award-list">
-      <li><span class="when">2026-04-17</span><span class="what"><strong>Anthropic AI for Science Grant</strong> — $20K Claude API credits for NegBioDB</span></li>
-      <li><span class="when">2026-04-27</span><span class="what"><strong>NSF ACCESS Explore Allocation</strong> as PI (CIS260843) — 200K + 200K supplement compute credits, 12-month term</span></li>
-      <li><span class="when">2026-04-22</span><span class="what"><strong>NAIRR Pilot Start-Up</strong> as PI (NAIRR260165) — ~1,500 H100-hours, decision pending</span></li>
-      <li><span class="when">2024</span><span class="what"><strong>Boryung Humans In Space Challenge Orbital Launch Funding</strong> — $250K</span></li>
-      <li><span class="when">2016–2020</span><span class="what"><strong>Cheongam Science Fellowship</strong> — $25K/yr × 3</span></li>
-    </ul>
-  </div>
-</section>
-
-<section id="service">
-  <div class="container">
-    <h2>Service &amp; reviewing</h2>
-    <ul class="award-list">
-      <li><span class="when">Reviewer</span><span class="what">NeurIPS 2026 Position Paper Track</span></li>
-      <li><span class="when">Reviewer</span><span class="what">MLCSB at ISMB 2026</span></li>
-      <li><span class="when">Reviewer</span><span class="what"><em>Nature Communications</em>, <em>iScience</em>, <em>npj Microgravity</em>, <em>Acta Astronautica</em></span></li>
-      <li><span class="when">Co-founder</span><span class="what">Space Omics and Medical Atlas (SOMA) — 100+ institutions across 25+ countries</span></li>
-      <li><span class="when">Plenary / panels</span><span class="what">ASHG 2025 plenary · ESHG 2025 panelist · IAC 2025 · COSPAR 2024 session chair</span></li>
-    </ul>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <p>© 2026 JangKeun Kim, Ph.D. · Built with vanilla HTML/CSS · <a href="https://github.com/jang1563/jang1563.github.io" target="_blank" rel="noopener">Site source</a></p>
-    <p style="margin-top: 8px;">Calibration analysis (ECE, AUROC, Cohen's κ, Wilson 95% CI, McNemar, Krippendorff α) · STRIDE threat modeling · NSABB-category classification · Constitutional AI methodology · QLoRA / DPO / GRPO · vLLM · LLM-as-judge with self-consistency</p>
-  </div>
-</footer>
-
+  </footer>
 </body>
 </html>
